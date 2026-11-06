@@ -1,0 +1,13 @@
+info:
+  name: TLS with custom CA
+  type: grpc
+  seq: 1
+grpc:
+  url: grpcs://{{tlsHost}}
+  method: streamx.test.Echo/Unary
+  message: |-
+    {"text": "tls"}
+extensions:
+  streamx:
+    tls:
+      caFile: "{{certDir}}/ca.pem"

@@ -1,0 +1,29 @@
+syntax = "proto3";
+package streamx.test;
+
+import "common/msg.proto";
+import "google/protobuf/timestamp.proto";
+
+message StreamReq {
+  string text = 1;
+  int32 count = 2;
+}
+
+message Summary {
+  int32 count = 1;
+  repeated string texts = 2;
+  google.protobuf.Timestamp at = 3;
+}
+
+// Echo exercises every gRPC call type.
+service Echo {
+  // Unary echoes the message. text "fail" returns INVALID_ARGUMENT.
+  // Metadata "x-suffix" is appended to text; header "x-served-by" is set.
+  rpc Unary(Msg) returns (Msg);
+  // ServerStream sends count messages with n = 0..count-1.
+  rpc ServerStream(StreamReq) returns (stream Msg);
+  // ClientStream counts and collects the texts it receives.
+  rpc ClientStream(stream Msg) returns (Summary);
+  // Bidi echoes each message with n + 1.
+  rpc Bidi(stream Msg) returns (stream Msg);
+}

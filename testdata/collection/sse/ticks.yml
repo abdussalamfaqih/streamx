@@ -1,0 +1,25 @@
+info:
+  name: SSE ticks
+  type: http
+  seq: 1
+http:
+  method: GET
+  url: http://{{httpHost}}/sse?count=5
+  headers:
+    - name: Accept
+      value: text/event-stream
+runtime:
+  assertions:
+    - expression: res.headers.content-type
+      operator: contains
+      value: text/event-stream
+    - expression: res.messages.length
+      operator: eq
+      value: "3"
+    - expression: res.messages[2].n
+      operator: eq
+      value: "2"
+extensions:
+  streamx:
+    stream:
+      maxMessages: 3

@@ -1,0 +1,39 @@
+syntax = "proto3";
+package streamx.test;
+
+import "common/msg.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+enum Color {
+  COLOR_UNSPECIFIED = 0;
+  RED = 1;
+  GREEN = 2;
+}
+
+// Everything covers the JSON mappings that trip up dynamic clients.
+message Everything {
+  google.protobuf.Any any = 1;
+  google.protobuf.Timestamp at = 2;
+  google.protobuf.Duration took = 3;
+  google.protobuf.Struct meta = 4;
+  google.protobuf.StringValue maybe = 5;
+  Color color = 6;
+  bytes raw = 7;
+  map<string, int64> counts = 8;
+  oneof choice {
+    string name = 9;
+    int32 id = 10;
+  }
+  int64 big = 11;
+  repeated Msg items = 12;
+}
+
+service Types {
+  // Echo returns the request unchanged. name "details" fails with
+  // INVALID_ARGUMENT carrying a google.rpc.BadRequest detail.
+  rpc Echo(Everything) returns (Everything);
+}

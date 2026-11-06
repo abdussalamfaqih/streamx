@@ -1,0 +1,6 @@
+name: local
+variables:
+  - name: host
+    value: localhost:50051
+  - name: httpHost
+    value: localhost:8080

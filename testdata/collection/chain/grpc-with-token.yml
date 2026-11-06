@@ -1,0 +1,20 @@
+info:
+  name: gRPC call with the token
+  type: grpc
+  seq: 2
+grpc:
+  url: grpc://{{host}}
+  method: streamx.test.Echo/Unary
+  metadata:
+    - name: authorization
+      value: Bearer {{token}}
+    # The test server appends x-suffix to the reply, which proves the token arrived.
+    - name: x-suffix
+      value: "-{{token}}"
+  message: |-
+    {"text": "hi"}
+runtime:
+  assertions:
+    - expression: res.body.text
+      operator: eq
+      value: hi-{{token}}

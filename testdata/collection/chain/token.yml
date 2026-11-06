@@ -1,0 +1,27 @@
+info:
+  name: get token over HTTP
+  type: http
+  seq: 1
+http:
+  method: POST
+  url: http://{{httpHost}}/token
+  body:
+    type: json
+    data: |-
+      {"user": "demo"}
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.token
+      operator: isString
+  actions:
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body.token
+        method: jsonq
+      variable:
+        name: token
+        scope: runtime

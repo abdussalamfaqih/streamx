@@ -1,0 +1,49 @@
+# Bidi chat request. Comments must survive a save.
+info:
+  name: chat
+  type: grpc
+  seq: 3
+grpc:
+  url: grpcs://{{host}} # trailing comment
+  method: streamx.test.Echo/Bidi
+  methodType: bidi-streaming
+  protoFilePath: protos/echo.proto
+  metadata:
+    - name: authorization
+      value: Bearer {{token}}
+    - name: x-off
+      value: "1"
+      disabled: true
+  message: |-
+    {"text": "hello"}
+runtime:
+  assertions:
+    - expression: res.messages.length
+      operator: eq
+      value: "2"
+    - expression: res.status
+      operator: eq
+      value: "0"
+      disabled: true
+  scripts:
+    - type: after-response
+      code: console.log(res)
+extensions:
+  streamx:
+    messages:
+      - '{"text":"a"}'
+      - '{"text":"b"}'
+    stream:
+      maxMessages: 10
+      timeout: 5s
+    tls:
+      caFile: certs/ca.pem
+    actions:
+      - type: set-variable
+        selector:
+          expression: res.body.text
+          method: jsonq
+        variable:
+          name: last
+          scope: runtime
+unknownKey: kept as-is

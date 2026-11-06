@@ -1,0 +1,28 @@
+info:
+  name: HTTP echo
+  type: http
+  seq: 1
+http:
+  method: PUT
+  url: http://{{httpHost}}/echo
+  headers:
+    - name: x-trace
+      value: abc
+  body:
+    type: json
+    data: |-
+      {"a": 1}
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.method
+      operator: eq
+      value: PUT
+    - expression: res.body.headers.content-type
+      operator: eq
+      value: application/json
+    - expression: res.body.headers.x-trace
+      operator: eq
+      value: abc

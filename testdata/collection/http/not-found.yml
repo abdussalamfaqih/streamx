@@ -1,0 +1,12 @@
+info:
+  name: expected 404
+  type: http
+  seq: 2
+http:
+  method: GET
+  url: http://{{httpHost}}/status/404
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "404"

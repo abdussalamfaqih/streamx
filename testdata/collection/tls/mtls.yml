@@ -1,0 +1,13 @@
+info:
+  name: mTLS with client certificate
+  type: grpc
+  seq: 2
+grpc:
+  url: grpcs://{{mtlsHost}}
+  method: streamx.test.Echo/Unary
+  message: |-
+    {"text": "mtls"}
+extensions:
+  streamx:
+    tls:
+      caFile: "{{certDir}}/ca.pem"

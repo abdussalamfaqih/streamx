@@ -1,0 +1,22 @@
+info:
+  name: client streaming
+  type: grpc
+  seq: 4
+grpc:
+  url: grpc://{{host}}
+  method: streamx.test.Echo/ClientStream
+  methodType: client-streaming
+runtime:
+  assertions:
+    - expression: res.body.count
+      operator: eq
+      value: "3"
+    - expression: res.body.texts
+      operator: contains
+      value: b
+extensions:
+  streamx:
+    messages:
+      - '{"text": "a"}'
+      - '{"text": "b"}'
+      - '{"text": "c"}'

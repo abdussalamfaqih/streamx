@@ -1,0 +1,13 @@
+opencollection: 1.0.0
+info:
+  name: streamx examples
+config:
+  protobuf:
+    importPaths:
+      - path: ../protos
+  clientCertificates:
+    # Only the mTLS server is reached through 127.0.0.1.
+    - domain: 127.0.0.1
+      type: pem
+      certificateFilePath: "{{certDir}}/client.pem"
+      privateKeyFilePath: "{{certDir}}/client-key.pem"

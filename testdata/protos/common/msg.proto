@@ -1,0 +1,7 @@
+syntax = "proto3";
+package streamx.test;
+
+message Msg {
+  string text = 1;
+  int32 n = 2;
+}

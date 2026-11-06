@@ -1,0 +1,5 @@
+/streamx
+/dist/
+# secret values for environments (OpenCollection dotEnvFilePath)
+.env
+*.env
